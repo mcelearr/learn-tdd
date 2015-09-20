@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-1.18.0.css">
     <!-- Pure CSS is a minimalist CSS file we have included to make things look nicer -->
     <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
-    <link rel="shortcut icon" type="image/png" href="http://www.favicon.cc/logo3d/805435.png"/>
   </head>
   <body style='margin: 0 1em;'>
     <div id='main'>
@@ -18,9 +17,98 @@
     <div id="qunit-fixture"></div>
     <!-- Load the QUnit Testing Framework from CDN - this is the important bit ... -->
     <script src="https://code.jquery.com/qunit/qunit-1.18.0.js"></script>
-    <!-- Load Blanket.js from CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/blanket.js/1.1.4/blanket.js"></script>
-    <script src="/change.js" data-cover></script> <!-- load our getChange method  -->
-    <script src="/test.js"></script>              <!-- load tests after getChange -->
+    <script>
+
+    var coins = [200, 100, 50, 20, 10, 5, 2, 1]
+
+function getChange(totalPayable, cashPaid) {
+    var change = [];
+    var pennies = cashPaid - totalPayable;
+
+for (var i = 0; i < coins.length; i++) {
+        if(pennies/coins[i] >= 1) {
+            var times = Math.floor(pennies/coins[i]);
+
+            for(var j = 0; j < times; j++) {
+                change.push(coins[i]);
+                pennies = pennies - coins[i];
+            }
+        }
+    }
+    return change;
+};
+
+// function getChange(totalPayable,cashPaid){
+//   'use strict';
+//   var coins = [200, 100, 50, 20, 10, 5, 2, 1];
+//   var pennies= cashPaid-totalPayable;
+//   var array=[];
+//   var change =[];
+//
+// //
+// for (var i=0;i<coins.length;i++){
+//     change[i]=Math.floor(pennies/coins[i])*coins[i];
+//     pennies=pennies-(change[i]);
+//   }
+// //   }
+// for (var j=0;j<coins.length;j++){
+//   // if (array[i]!=0){
+//   //   change[i]=array[i];
+//   // } else {
+//   //   continue;
+//   // }
+//
+//   if (change[i]===0){
+//     change.splice(i,1);
+//   }
+// }
+// return change;
+// }
+// // for (var j=0; j<coins.length;j++ ){
+// //      if(change[j]===0){
+// //          change.splice(j,1);
+// //        }
+// //    }
+//
+// //
+// //   return change;
+// //
+// //
+// // }
+//
+
+</script>
+<script>
+
+test('getChange(486, 600) should equal [100, 10, 2, 2]', function(assert) {
+  var result = getChange(486, 600);
+  var expected = [100, 10, 2, 2];
+  assert.deepEqual(result, expected);
+})
+
+test('getChange(215, 300) should return [50, 20, 10, 5]', function(assert) {
+  var result = getChange(215, 300); // expect an array containing [50,20,10,5]
+  var expected = [50, 20, 10, 5];
+  assert.deepEqual(result, expected);
+});
+
+test('getChange(1,1) should equal [] - an empty array', function(assert) {
+  var result = getChange(1, 1); //no change/coins just an empty array
+  var expected = [];
+  assert.deepEqual(result, expected);
+});
+
+
+      // // This is what a simple unit test looks like:
+      // test('This sample test should always pass!', function(assert) {
+      //   var result = 1 + 1;
+      //   assert.equal(result, 2); // just so we know everything loaded ok
+      // });
+      // // A failing test will be RED:
+      // test('This is what a failing test looks like!', function(assert) {
+      //   var result = [1,2,3].indexOf(1);  // this should be 1
+      //   assert.equal(result, -1); // we *expect* this to fail
+      // });
+    </script>
   </body>
 </html>
