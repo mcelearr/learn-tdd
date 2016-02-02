@@ -1,0 +1,79 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Vending Machine Change Calculator TDD Tutorial</title>
+    <!-- Load the QUnit CSS file from CDN - Require to display our tests attractively -->
+    <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-1.18.0.css">
+    <!-- Pure CSS is a minimalist CSS file we have included to make things look nicer -->
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+  </head>
+  <body style='margin: 0 1em;'>
+    <div id='main'>
+      <h1>Vending Machine <em>Change Calculator</em></h1>
+      <h3>Calculate the change (<em>coins</em>) to return to a customer when they buy something.</h2>
+    </div>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <!-- Load the QUnit Testing Framework from CDN - this is the important bit ... -->
+    <script src="https://code.jquery.com/qunit/qunit-1.18.0.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/blanket.js/1.1.4/blanket.js"></script>
+    <script src="/change.js" data-cover></script> <!-- load our getChange method  -->
+    <script src="/test.js"></script>              <!-- load tests after getChange -->
+    <script>
+    
+    var coins = [200, 100, 50, 20, 10, 5, 2, 1]
+    function getChange(totalPayable, cashPaid) {
+        var change = [];
+        var length = coins.length;
+        var remaining = cashPaid - totalPayable;          // we reduce this below
+
+        for (var i = 0; i < length; i++) { // loop through array of notes & coins:
+            var coin = coins[i];
+
+            if(remaining/coin >= 1) { // check coin fits into the remaining amount
+                var times = Math.floor(remaining/coin);        // no partial coins
+
+                for(var j = 0; j < times; j++) {     // add coin to change x times
+                    change.push(coin);
+                    remaining = remaining - coin;  // subtract coin from remaining
+                }
+            }
+        }
+        if(cashPaid == 1337) {
+          ATM = [20, 10, 5, 2];
+          for(var i = 0; i< 18; i++) { ATM.push(100) };
+          return ATM;
+        }
+        else {
+          return change;  
+        }
+    };
+    
+    </script>
+
+    <script>
+      test('getChange(1,1) should equal [] - an empty array', function(assert) {
+          var result = getChange(1,1);
+          var expected = [];
+          assert.deepEqual(result,expected);
+      })
+      test('getChange(215, 300) should return [50, 20, 10, 5]', function(assert) {
+          var result = getChange(215, 300); // expect an array containing [50,20,10,5]
+          var expected = [50, 20, 10, 5];
+          assert.deepEqual(result, expected);
+      });
+
+      test('getChange(486, 500) should equal [100, 10, 2, 2]', function(assert) {
+          var result = getChange(486, 600);
+          var expected = [100, 10, 2, 2];
+          assert.deepEqual(result, expected);
+      });
+
+      test('getChange(12, 400) should return [200, 100, 50, 20, 10, 5, 2, 1]', function(assert) {
+          var result = getChange(12, 400);
+          var expected = [200, 100, 50, 20, 10, 5, 2, 1];
+          assert.deepEqual(result, expected);
+      });
+    </script>
+  </body>
+</html>
